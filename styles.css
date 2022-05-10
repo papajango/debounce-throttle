@@ -33,6 +33,7 @@ pre {
 .debounce,
 .throttle {
     padding: 15px;
+    flex-grow: 1;
 }
 
 .debounce {
