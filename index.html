@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="debounce, throttle, HTML, CSS, JavaScript">
+    <meta name="description" content="Javascript debounce and throttle functions comparison">
+    <meta name="author" content="Tyler Durden">
+    <title>Debounce and Throttle Comparison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="text-wrapper">
+        <h1>Move your mouse</h1>
+        <div class="info">
+            <div>
+                <b>Default:</b>
+                <span id="default"></span>
+            </div>
+            <div>
+                <b>Debounce:</b>
+                <span id="debounce"></span>
+            </div>
+            <div>
+                <b>Throttle:</b>
+                <span id="throttle"></span>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="debounce">
+            <pre>
+                <code>
+/*
+* Prevents function execution if time between interactions is less than delay
+*/
+const debounce = (cb, delay = 1000) => {
+    let timeout;
+    
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            cb(...args);
+        }, delay);
+    };
+};
+                </code>
+            </pre>
+            
+        </div>
+        <div class="throttle">
+            <pre>
+                <code>
+/*
+* Prevents function execution if call frequency is more than one per set period of time
+*/
+const throttle = (cb, delay = 1000) => {
+    let shouldWait = false;
+    let waitingArgs = null;
+    const timeoutFunc = () => {
+        if (waitingArgs === null) {
+            shouldWait = false;
+        } else {
+            cb(...waitingArgs);
+            waitingArgs = null;
+            setTimeout(timeoutFunc, delay);
+        }
+    };
+    return (...args) => {
+        if (shouldWait) {
+            waitingArgs = args;
+            return;
+        }
+        cb(...args);
+        shouldWait = true;
+        setTimeout(timeoutFunc, delay);
+    };
+};
+                </code>
+            </pre>
+        
+        </div>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
